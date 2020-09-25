@@ -1,7 +1,7 @@
 # Coco
 Some usefull additions to Choco: backup &amp; restore, clean-up and reinstall:
 
-``
+```
 λ coco -h
 
 === ( ͡° ͜ʖ ͡°) ============================================
@@ -17,5 +17,5 @@ Usage:
  COCO cleanup                   Cleans the Chocolatey environment from temporary and other useless files.
  COCO setup                     Sets up Coco (installs choco-cleaner)
  COCO reinstall <package> [-y]  Reinstall this package by uninstalling and installing this package.
- ``
+ ```
  
