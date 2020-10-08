@@ -30,7 +30,7 @@ chcp 437>NUL
 	ECHO:
 	ECHO  COCO backup 			Creates a backup in the form of a batch file.
 	ECHO  COCO cleanup			Cleans the Chocolatey environment from temporary and other useless files.
-	ECHO  COCO installed			Lists which packages have been installed.
+	ECHO  COCO installed ^<package^>	Lists which packages have been installed.
 	ECHO  COCO setup			Sets up Coco (installs choco-cleaner)
 	ECHO  COCO reinstall ^<package^> [-y]	Reinstall this package by uninstalling and installing this package.
 	GOTO exitbat
