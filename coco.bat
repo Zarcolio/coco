@@ -12,6 +12,7 @@ chcp 437>NUL
 	IF "%1"=="restore" 		GOTO restore
 	IF "%1"=="cleanup"		GOTO cleanup
 	IF "%1"=="setup"		GOTO setup
+	IF "%1"=="installed"		GOTO installed
 	IF "%1"=="" 			GOTO help
 	IF "%1"=="-h" 			GOTO help
 	IF "%1"=="-?" 			GOTO help
@@ -29,6 +30,7 @@ chcp 437>NUL
 	ECHO:
 	ECHO  COCO backup 			Creates a backup in the form of a batch file.
 	ECHO  COCO cleanup			Cleans the Chocolatey environment from temporary and other useless files.
+	ECHO  COCO installed			Lists which packages have been installed.
 	ECHO  COCO setup			Sets up Coco (installs choco-cleaner)
 	ECHO  COCO reinstall ^<package^> [-y]	Reinstall this package by uninstalling and installing this package.
 	GOTO exitbat
@@ -59,12 +61,17 @@ chcp 437>NUL
 
 :setup
 	CHOCO install choco-cleaner -y
-	
 	GOTO exitbat
 
 :reinstall
 	choco uninstall %2 %opt%
 	choco install %2 %opt%
+	GOTO exitbat
+
+:installed
+	IF NOT "%2"=="" SET InstalledFind=^|FIND /i "%2"
+	dir /b "%ProgramData%\chocolatey\lib"%InstalledFind%
+	SET InstalledFind=
 	GOTO exitbat
 	
 :exitbat
