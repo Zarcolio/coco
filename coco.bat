@@ -28,20 +28,39 @@ chcp 437>NUL
 	ECHO:
 	ECHO Usage:
 	ECHO:
-	ECHO  COCO backup 			Creates a backup in the form of a batch file.
+	ECHO  COCO backup ^<batch^> 		Creates a backup of installed packages to text (default) or batch file.
 	ECHO  COCO cleanup			Cleans the Chocolatey environment from temp and other useless files.
 	ECHO  COCO installed ^<package^>	Lists which packages have been installed.
-	ECHO  COCO setup			Sets up Coco (installs choco-cleaner)
 	ECHO  COCO reinstall ^<package^> [-y]	Reinstall this package by uninstalling and installing this package.
+	ECHO  COCO restore ^<file^> 		Restore a backup from file.
+	ECHO  COCO setup			Sets up Coco (installs choco-cleaner)
 	GOTO exitbat
 
 :backup
+	IF "%2"=="batch" GOTO backupbatch
 	FOR /f "tokens=2 delims==" %%G in ('wmic os get localdatetime /value') do set datetime=%%G
 	SET DateOnly=%datetime:~0,8%
 	dir /b "%ProgramData%\chocolatey\lib">"%userprofile%\documents\Choco_Pkg_%DateOnly%.txt"
-	IF ERRORLEVEL 0 ECHO Backup succesful.
+	IF ERRORLEVEL 0 ECHO Backup to text file succesful.
 	IF ERRORLEVEL 0 GOTO exitbat
 	ECHO Backup not succesful.
+
+:backupbatch
+	FOR /f "tokens=2 delims==" %%G in ('wmic os get localdatetime /value') do set datetime=%%G
+	SET DateOnly=%datetime:~0,8%
+	DIR /b "%ProgramData%\chocolatey\lib">"%userprofile%\documents\Choco_Pkg_%DateOnly%.txt"
+	ECHO @ECHO OFF>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
+	ECHO ECHO Coco is about to reinstall the packages in %%0.>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
+	ECHO ECHO Do you want to continue? Hit Ctrl-C to quit.>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
+	ECHO ECHO.>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
+	ECHO PAUSE>NUL>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
+
+
+	for /f %%f in (Choco_Pkg_%DateOnly%.txt) do echo choco install %%f -y>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
+	IF ERRORLEVEL 0 ECHO Backup to batch file succesful.
+	IF ERRORLEVEL 0 GOTO exitbat
+	ECHO Backup not succesful.
+
 
 :restore
 	IF "%2"=="" ECHO Filename is needed.
