@@ -15,7 +15,7 @@ Usage:
 
  COCO backup [batch]            Creates a backup of installed packages to text (default) or batch file.
  COCO cleanup                   Cleans the Chocolatey environment from temp and other useless files.
- COCO installed <package>       Lists which packages have been installed.
+ COCO installed [<package>]     Lists which packages have been installed.
  COCO reinstall <package> [-y]  Reinstall this package by uninstalling and installing this package.
  COCO restore <file>            Restore a backup from file.
  COCO setup                     Sets up Coco (installs choco-cleaner)
