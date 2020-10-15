@@ -28,9 +28,9 @@ chcp 437>NUL
 	ECHO:
 	ECHO Usage:
 	ECHO:
-	ECHO  COCO backup ^<batch^> 		Creates a backup of installed packages to text (default) or batch file.
+	ECHO  COCO backup [batch] 		Creates a backup of installed packages to text (default) or batch file.
 	ECHO  COCO cleanup			Cleans the Chocolatey environment from temp and other useless files.
-	ECHO  COCO installed ^<package^>	Lists which packages have been installed.
+	ECHO  COCO installed [^<package^>]	Lists which packages have been installed.
 	ECHO  COCO reinstall ^<package^> [-y]	Reinstall this package by uninstalling and installing this package.
 	ECHO  COCO restore ^<file^> 		Restore a backup from file.
 	ECHO  COCO setup			Sets up Coco (installs choco-cleaner)
