@@ -18,5 +18,5 @@ Usage:
  COCO installed [<package>]     Lists which packages have been installed.
  COCO reinstall <package> [-y]  Reinstall this package by uninstalling and installing this package.
  COCO restore <file>            Restore a backup from file.
- COCO setup                     Sets up Coco (installs choco-cleaner)
+ COCO setup                     Sets up Coco (installs choco-cleaner and Coco itself).
  
