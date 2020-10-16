@@ -1,11 +1,11 @@
 @ECHO OFF
-chcp 65001>NUL
+CHCP 65001>NUL
 ECHO:
 ECHO === ( ͡° ͜ʖ ͡°) ============================================
 ECHO =            Watch out! Hot coco overhere!!!            =
 ECHO ============================================ ( ͡° ͜ʖ ͡°) ===
 ECHO:
-chcp 437>NUL
+CHCP 437>NUL
 
 :startbat
 	IF "%1"=="backup" 		GOTO backup
@@ -33,14 +33,14 @@ chcp 437>NUL
 	ECHO  COCO installed [^<package^>]	Lists which packages have been installed.
 	ECHO  COCO reinstall ^<package^> [-y]	Reinstall this package by uninstalling and installing this package.
 	ECHO  COCO restore ^<file^> 		Restore a backup from file.
-	ECHO  COCO setup			Sets up Coco (installs choco-cleaner)
+	ECHO  COCO setup			Sets up Coco (installs choco-cleaner and Coco itself).
 	GOTO exitbat
 
 :backup
 	IF "%2"=="batch" GOTO backupbatch
 	FOR /f "tokens=2 delims==" %%G in ('wmic os get localdatetime /value') do set datetime=%%G
 	SET DateOnly=%datetime:~0,8%
-	dir /b "%ProgramData%\chocolatey\lib">"%userprofile%\documents\Choco_Pkg_%DateOnly%.txt"
+	DIR /B "%ProgramData%\chocolatey\lib">"%userprofile%\documents\Choco_Pkg_%DateOnly%.txt"
 	IF ERRORLEVEL 0 ECHO Backup to text file succesful.
 	IF ERRORLEVEL 0 GOTO exitbat
 	ECHO Backup not succesful.
@@ -56,7 +56,7 @@ chcp 437>NUL
 	ECHO PAUSE>NUL>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
 
 
-	for /f %%f in (Choco_Pkg_%DateOnly%.txt) do echo choco install %%f -y>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
+	FOR /F %%f in (Choco_Pkg_%DateOnly%.txt) do echo choco install %%f -y>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
 	IF ERRORLEVEL 0 ECHO Backup to batch file succesful.
 	IF ERRORLEVEL 0 GOTO exitbat
 	ECHO Backup not succesful.
@@ -80,16 +80,17 @@ chcp 437>NUL
 
 :setup
 	CHOCO install choco-cleaner -y
+	COPY "%~dpxn0" "%ProgramData%\chocolatey\bin"
 	GOTO exitbat
 
 :reinstall
-	choco uninstall %2 %opt%
-	choco install %2 %opt%
+	CHOCO uninstall %2 %opt%
+	CHOCO install %2 %opt%
 	GOTO exitbat
 
 :installed
 	IF NOT "%2"=="" SET InstalledFind=^|FIND /i "%2"
-	dir /b "%ProgramData%\chocolatey\lib"%InstalledFind%
+	DIR /B "%ProgramData%\chocolatey\lib"%InstalledFind%
 	SET InstalledFind=
 	GOTO exitbat
 	
