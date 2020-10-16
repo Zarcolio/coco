@@ -15,12 +15,12 @@ CHCP 437>NUL
 	IF "%1"=="installed"		GOTO installed
 	IF "%1"=="" 			GOTO help
 	IF "%1"=="-h" 			GOTO help
+	IF "%1"=="help" 		GOTO help
 	IF "%1"=="-?" 			GOTO help
-	IF "%2"=="" 			GOTO help
 	IF "%3"=="-y" 			SET opt=%3
 	IF "%1"=="reinstall"	GOTO reinstall
 	REM And else:
-	GOTO :help
+	GOTO :invalid
 
 :help
 	ECHO COCO is a set of customizations to Chocolatey.
@@ -30,6 +30,7 @@ CHCP 437>NUL
 	ECHO:
 	ECHO  COCO backup [batch] 		Creates a backup of installed packages to text (default) or batch file.
 	ECHO  COCO cleanup			Cleans the Chocolatey environment from temp and other useless files.
+	ECHO  COCO [help^|-h]			Displays help text.
 	ECHO  COCO installed [^<package^>]	Lists which packages have been installed.
 	ECHO  COCO reinstall ^<package^> [-y]	Reinstall this package by uninstalling and installing this package.
 	ECHO  COCO restore ^<file^> 		Restore a backup from file.
@@ -63,10 +64,10 @@ CHCP 437>NUL
 	IF ERRORLEVEL 0 GOTO exitbat
 	ECHO Backup not succesful.
 
-
 :restore
-	IF "%2"=="" ECHO Filename is needed.
-	IF "%2"=="" GOTO exitbat
+	IF "%2"=="" ECHO ERROR: File name is needed.
+	IF "%2"=="" ECHO:
+	IF "%2"=="" GOTO help
 	IF NOT EXIST "%2" ECHO File not found.
 	IF NOT EXIST "%2" GOTO exitbat
 	
@@ -86,6 +87,9 @@ CHCP 437>NUL
 	GOTO exitbat
 
 :reinstall
+	IF "%2"=="" ECHO ERROR: Package name is needed.
+	IF "%2"=="" ECHO:
+	IF "%2"=="" GOTO help
 	CHOCO uninstall %2 %opt%
 	CHOCO install %2 %opt%
 	GOTO exitbat
@@ -95,5 +99,10 @@ CHCP 437>NUL
 	DIR /B "%ProgramData%\chocolatey\lib"%InstalledFind%
 	SET InstalledFind=
 	GOTO exitbat
-	
+
+:invalid
+	ECHO ERROR: Invalid parameters detected.
+	ECHO:
+	GOTO help	
+
 :exitbat
