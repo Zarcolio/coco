@@ -84,6 +84,7 @@ CHCP 437>NUL
 :setup
 	CHOCO install choco-cleaner -y
 	COPY "%~dpxn0" "%ProgramData%\chocolatey\bin"
+	IF %ERRORLEVEL% NEQ 0 EXIT /B 255
 	GOTO exitbat
 
 :reinstall
