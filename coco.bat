@@ -34,6 +34,8 @@ CHCP 437>NUL
 	ECHO  COCO reinstall ^<package^> [-y]	Reinstall this package by uninstalling and installing this package.
 	ECHO  COCO restore ^<file^> 		Restore a backup from file.
 	ECHO  COCO setup			Sets up Coco (installs choco-cleaner and Coco itself).
+	IF %0 EQU "%~dpnx0" ECHO:
+	IF %0 EQU "%~dpnx0" PAUSE
 	GOTO exitbat
 
 :backup
