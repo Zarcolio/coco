@@ -63,13 +63,13 @@ if ($cleanup)
 
     If ($CleanupFolders.Count -eq 0)
     {
-        Write-Host ("Nothing to be deleted.")
+        Write-Host ("`r`n  **  NO legacy files in .chocolatey to delete.")
     }
     Else
     {
         $FolderDeleteCount = $CleanupFolders.Count
 
-        $Response = Read-Host -Prompt ([String]$FolderDeleteCount + " folders can be deleted. Delete them now? [y/n]")
+        $Response = Read-Host -Prompt ("`r`n  **  " + [String]$FolderDeleteCount + " folders can be deleted. Delete them now? [y/n]")
         if ($Response.ToLower() -eq 'y') {
             ForEach ($CleanupFolder in $CleanupFolders)
             {

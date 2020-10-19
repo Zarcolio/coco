@@ -79,10 +79,12 @@ CHCP 437>NUL
 
 :cleanup
 	CALL choco-cleaner.bat
+	Powershell.exe -file %ProgramData%\chocolatey\bin\coco-packages.ps1 -Cleanup
 	GOTO exitbat
 
 :setup
 	CHOCO install choco-cleaner -y
+	Powershell.exe -command Invoke-WebRequest https://raw.githubusercontent.com/Zarcolio/coco/master/coco-packages.ps1 -O %ProgramData%\chocolatey\bin\coco-packages.ps1
 	COPY "%~dpxn0" "%ProgramData%\chocolatey\bin"
 	IF %ERRORLEVEL% NEQ 0 EXIT /B 255
 	GOTO exitbat
@@ -98,6 +100,7 @@ CHCP 437>NUL
 :installed
 	IF NOT "%2"=="" SET InstalledFind=^|FIND /i "%2"
 	DIR /B "%ProgramData%\chocolatey\lib"%InstalledFind%
+	Powershell.exe -file %ProgramData%\chocolatey\bin\coco-packages.ps1 -List
 	SET InstalledFind=
 	GOTO exitbat
 
