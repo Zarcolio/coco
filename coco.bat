@@ -1,112 +1,117 @@
-@ECHO OFF
-CHCP 65001>NUL
-ECHO:
-ECHO === ( ͡° ͜ʖ ͡°) ============================================
-ECHO =            Watch out! Hot coco overhere!!!            =
-ECHO ============================================ ( ͡° ͜ʖ ͡°) ===
-ECHO:
-CHCP 437>NUL
+@echo off
+chcp 65001>nul
+echo:
+echo === ( ?? ?? ??) ============================================
+echo =            watch out! hot coco overhere!!!            =
+echo ============================================ ( ?? ?? ??) ===
+echo:
+chcp 437>nul
+
+set opt=
+set opt2=
 
 :startbat
-	IF "%1"=="backup" 		GOTO backup
-	IF "%1"=="restore" 		GOTO restore
-	IF "%1"=="cleanup"		GOTO cleanup
-	IF "%1"=="setup"		GOTO setup
-	IF "%1"=="installed"		GOTO installed
-	IF "%1"=="" 			GOTO help
-	IF "%1"=="-h" 			GOTO help
-	IF "%1"=="help" 		GOTO help
-	IF "%1"=="-?" 			GOTO help
-	IF "%3"=="-y" 			SET opt=%3
-	IF "%1"=="reinstall"	GOTO reinstall
-	REM And else:
-	GOTO :invalid
+	if /i "%1"=="backup" 		goto backup
+	if /i "%1"=="restore" 		goto restore
+	if /i "%1"=="cleanup"		goto cleanup
+	if /i "%1"=="setup"		goto setup
+	if /i "%1"=="installed"		goto installed
+	if /i "%1"=="" 			goto help
+	if /i "%1"=="-h" 			goto help
+	if /i "%1"=="help" 		goto help
+	if /i "%1"=="-?" 			goto help
+	if /i "%3"=="-y" 			set opt=%3
+	if /i "%3"=="-y" 		set opt2=/Q
+	if /i "%1"=="reinstall"	goto reinstall
+	rem and else:
+	goto :invalid
 
 :help
-	ECHO COCO is a set of customizations to Chocolatey.
-	ECHO For suggestions, you can reach me @zarcolio on Twitter or Github.
-	ECHO:
-	ECHO Usage:
-	ECHO:
-	ECHO  COCO backup [batch] 		Creates a backup of installed packages to text (default) or batch file.
-	ECHO  COCO cleanup			Cleans the Chocolatey environment from temp and other useless files.
-	ECHO  COCO [help^|-h]			Displays help text.
-	ECHO  COCO installed [^<package^>]	Lists which packages have been installed.
-	ECHO  COCO reinstall ^<package^> [-y]	Reinstall this package by uninstalling and installing this package.
-	ECHO  COCO restore ^<file^> 		Restore a backup from file.
-	ECHO  COCO setup			Sets up Coco (installs choco-cleaner and Coco itself).
-	IF %0 EQU "%~dpnx0" ECHO:
-	IF %0 EQU "%~dpnx0" PAUSE
-	GOTO exitbat
+	echo coco is a set of customizations to chocolatey.
+	echo for suggestions, you can reach me @zarcolio on twitter or github.
+	echo:
+	echo usage:
+	echo:
+	echo  coco backup [batch] 		creates a backup of installed packages to text (default) or batch file.
+	echo  coco cleanup			cleans the chocolatey environment from temp and other useless files.
+	echo  coco [help^|-h]			displays help text.
+	echo  coco installed [^<package^>]	lists which packages have been installed.
+	echo  coco reinstall ^<package^> [-y]	reinstall this package by uninstalling and installing this package.
+	echo  coco restore ^<file^> 		restore a backup from file.
+	echo  coco setup			sets up coco (installs choco-cleaner and coco itself).
+	if %0 equ "%~dpnx0" echo:
+	if %0 equ "%~dpnx0" pause
+	goto exitbat
 
 :backup
-	IF "%2"=="batch" GOTO backupbatch
-	FOR /f "tokens=2 delims==" %%G in ('wmic os get localdatetime /value') do set datetime=%%G
-	SET DateOnly=%datetime:~0,8%
-	DIR /B "%ProgramData%\chocolatey\lib">"%userprofile%\documents\Choco_Pkg_%DateOnly%.txt"
-	IF ERRORLEVEL 0 ECHO Backup to text file succesful.
-	IF ERRORLEVEL 0 GOTO exitbat
-	ECHO Backup not succesful.
+	if "%2"=="batch" goto backupbatch
+	for /f "tokens=2 delims==" %%g in ('wmic os get localdatetime /value') do set datetime=%%g
+	set dateonly=%datetime:~0,8%
+	dir /b "%programdata%\chocolatey\lib">"%userprofile%\documents\choco_pkg_%dateonly%.txt"
+	if errorlevel 0 echo backup to text file succesful.
+	if errorlevel 0 goto exitbat
+	echo backup not succesful.
 
 :backupbatch
-	FOR /f "tokens=2 delims==" %%G in ('wmic os get localdatetime /value') do set datetime=%%G
-	SET DateOnly=%datetime:~0,8%
-	DIR /b "%ProgramData%\chocolatey\lib">"%userprofile%\documents\Choco_Pkg_%DateOnly%.txt"
-	ECHO @ECHO OFF>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
-	ECHO ECHO Coco is about to reinstall the packages in %%0.>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
-	ECHO ECHO Do you want to continue? Hit Ctrl-C to quit.>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
-	ECHO ECHO.>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
-	ECHO PAUSE>NUL>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
+	for /f "tokens=2 delims==" %%g in ('wmic os get localdatetime /value') do set datetime=%%g
+	set dateonly=%datetime:~0,8%
+	dir /b "%programdata%\chocolatey\lib">"%userprofile%\documents\choco_pkg_%dateonly%.txt"
+	echo @echo off>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	echo echo coco is about to reinstall the packages in %%0.>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	echo echo do you want to continue? hit ctrl-c to quit.>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	echo echo.>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	echo pause>nul>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
 
 
-	FOR /F %%f in (Choco_Pkg_%DateOnly%.txt) do echo choco install %%f -y>>"%userprofile%\documents\Choco_Pkg_%DateOnly%.bat"
-	IF ERRORLEVEL 0 ECHO Backup to batch file succesful.
-	IF ERRORLEVEL 0 GOTO exitbat
-	ECHO Backup not succesful.
+	for /f %%f in (choco_pkg_%dateonly%.txt) do echo choco install %%f -y>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	if errorlevel 0 echo backup to batch file succesful.
+	if errorlevel 0 goto exitbat
+	echo backup not succesful.
 
 :restore
-	IF "%2"=="" ECHO ERROR: File name is needed.
-	IF "%2"=="" ECHO:
-	IF "%2"=="" GOTO help
-	IF NOT EXIST "%2" ECHO File not found.
-	IF NOT EXIST "%2" GOTO exitbat
+	if "%2"=="" echo error: file name is needed.
+	if "%2"=="" echo:
+	if "%2"=="" goto help
+	if not exist "%2" echo file not found.
+	if not exist "%2" goto exitbat
 	
-	ECHO Coco is about to reinstall the packages in "%2".
-	ECHO Do you want to continue? Hit Ctrl-C to quit.
-	PAUSE>NUL
-	FOR /F "tokens=* delims=" %%x in (%2) DO choco install -y %%x
-	GOTO exitbat
+	echo coco is about to reinstall the packages in "%2".
+	echo do you want to continue? hit ctrl-c to quit.
+	pause>nul
+	for /f "tokens=* delims=" %%x in (%2) do choco install -y %%x
+	goto exitbat
 
 :cleanup
-	CALL choco-cleaner.bat
-	Powershell.exe -file %ProgramData%\chocolatey\bin\coco-packages.ps1 -Cleanup
-	GOTO exitbat
+	call choco-cleaner.bat
+	powershell.exe -file %programdata%\chocolatey\bin\coco-packages.ps1 -cleanup
+	goto exitbat
 
 :setup
-	CHOCO install choco-cleaner -y
-	Powershell.exe -command Invoke-WebRequest https://raw.githubusercontent.com/Zarcolio/coco/master/coco-packages.ps1 -O %ProgramData%\chocolatey\bin\coco-packages.ps1
-	COPY "%~dpxn0" "%ProgramData%\chocolatey\bin"
-	IF %ERRORLEVEL% NEQ 0 EXIT /B 255
-	GOTO exitbat
+	choco install choco-cleaner -y
+	powershell.exe -command invoke-webrequest https://raw.githubusercontent.com/zarcolio/coco/master/coco-packages.ps1 -o %programdata%\chocolatey\bin\coco-packages.ps1
+	copy "%~dpxn0" "%programdata%\chocolatey\bin"
+	if %errorlevel% neq 0 exit /b 255
+	goto exitbat
 
 :reinstall
-	IF "%2"=="" ECHO ERROR: Package name is needed.
-	IF "%2"=="" ECHO:
-	IF "%2"=="" GOTO help
-	CHOCO uninstall %2 %opt%
-	CHOCO install %2 %opt%
-	GOTO exitbat
+	if "%2"=="" echo error: package name is needed.
+	if "%2"=="" echo:
+	if "%2"=="" goto help
+	choco uninstall %2 %opt%
+	DEL %opt2% %ProgramData%\chocolatey\lib\%2\
+	choco install %2 %opt%
+	goto exitbat
 
 :installed
-	IF NOT "%2"=="" SET InstalledFind=^|FIND /i "%2"
-	DIR /B "%ProgramData%\chocolatey\lib"%InstalledFind%
-	Powershell.exe -file %ProgramData%\chocolatey\bin\coco-packages.ps1 -List
-	SET InstalledFind=
-	GOTO exitbat
+	if not "%2"=="" set installedfind=^|find /i "%2"
+	dir /b "%programdata%\chocolatey\lib"%installedfind%
+	powershell.exe -file %programdata%\chocolatey\bin\coco-packages.ps1 -list %installedfind%
+	set installedfind=
+	goto exitbat
 
 :invalid
-	ECHO ERROR: Invalid parameters detected.
-	ECHO:
-	GOTO help	
+	echo error: invalid parameters detected.
+	echo:
+	goto help	
 
 :exitbat
