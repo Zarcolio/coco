@@ -1,9 +1,9 @@
 @echo off
 chcp 65001>nul
 echo:
-echo     ^|      ^|
+echo     ^| ᶜᵒᶜᵒ ^|
 echo === ( ° ͜ʖ ͡°) ============================================
-echo =            Watch out! Hot coco overhere!!! ^|      ^|   =
+echo =            Watch out! Hot coco overhere!!! ^| ᶜᵒᶜᵒ ^|   =
 echo ============================================ ( ° ͜ʖ ͡°) ===
 echo:
 chcp 437>nul
