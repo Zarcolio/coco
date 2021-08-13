@@ -9,7 +9,7 @@ Some usefull additions to Choco: backup &amp; restore, installed, clean-up and r
 ============================================ ( ͡° ͜ʖ ͡°) ===
 
 COCO is a set of customizations to Chocolatey.
-For suggestions, you can reach me @zarcolio on Twitter or Github.
+For suggestions, you can reach me @zarcolio on Twitter or GitHub.
 
 Usage:
 
@@ -19,4 +19,4 @@ Usage:
  COCO reinstall <package> [-y]  Reinstall this package by uninstalling and installing this package.
  COCO restore <file>            Restore a backup from file.
  COCO setup                     Sets up Coco (installs choco-cleaner and Coco itself).
- 
+ COCO update [-y]               updates all packages but only shows updated packages. 
