@@ -4,9 +4,10 @@ Some usefull additions to Choco: backup &amp; restore, installed, clean-up and r
 ```
 λ coco -h
 
-=== ( ͡° ͜ʖ ͡°) ============================================
-=            Watch out! Hot coco overhere!!!            =
-============================================ ( ͡° ͜ʖ ͡°) ===
+    |      |
+=== ( ° ͜ʖ ͡°) ============================================
+=            Watch out! Hot coco overhere!!! |      |   =
+============================================ ( ° ͜ʖ ͡°) ===
 
 COCO is a set of customizations to Chocolatey.
 For suggestions, you can reach me @zarcolio on Twitter or GitHub.
