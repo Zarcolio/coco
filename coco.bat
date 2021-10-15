@@ -22,7 +22,7 @@ set opt2=
 	if /i "%1"=="help" 		goto help
 	if /i "%1"=="-?" 			goto help
 	if /i "%3"=="-y" 			set opt=%3
-	if /i "%3"=="-y" 		set opt2=/Q
+	if /i "%3"=="-y" 		set opt2=/q
 	if /i "%1"=="reinstall"	goto reinstall
 	if /i "%1"=="update"	goto update
 	rem and else:
@@ -30,18 +30,18 @@ set opt2=
 
 :help
 	echo coco is a set of customizations to chocolatey.
-	echo for suggestions, you can reach me @zarcolio on Twitter or GitHub.
+	echo for suggestions, you can reach me @zarcolio on twitter or github.
 	echo:
 	echo usage:
 	echo:
-	echo  COCO backup [batch] 		creates a backup of installed packages to text (default) or batch file.
-	echo  COCO cleanup			cleans the chocolatey environment from temp and other useless files.
-	echo  COCO [help^|-h]			displays help text.
-	echo  COCO installed [^<package^>]	lists which packages have been installed.
-	echo  COCO reinstall ^<package^> [-y]	reinstall this package by uninstalling and installing this package.
-	echo  COCO restore ^<file^> 		restore a backup from file.
-	echo  COCO setup			sets up coco (installs choco-cleaner and coco itself).
-	echo  COCO update [-y]		updates all packages but only shows updated packages.
+	echo  coco backup [batch] 		creates a backup of installed packages to text (default) or batch file.
+	echo  coco cleanup			cleans the chocolatey environment from temp and other useless files.
+	echo  coco [help^|-h]			displays help text.
+	echo  coco installed [^<package^>]	lists which packages have been installed.
+	echo  coco reinstall ^<package^> [-y]	reinstall this package by uninstalling and installing this package.
+	echo  coco restore ^<file^> 		restore a backup from file.
+	echo  coco setup			sets up coco (installs choco-cleaner and coco itself).
+	echo  coco update [-y]		updates all packages but only shows updated packages.
 	if %0 equ "%~dpnx0" echo:
 	if %0 equ "%~dpnx0" pause
 	goto exitbat
@@ -101,22 +101,22 @@ set opt2=
 	if "%2"=="" echo:
 	if "%2"=="" goto help
 	choco uninstall %2 %opt%
-	DEL %opt2% %ProgramData%\chocolatey\lib\%2\
+	del %opt2% %programdata%\chocolatey\lib\%2\
 	choco install %2 %opt%
 	goto exitbat
 
 :update
-	cup all %opt%|find /v "is the latest version available based on your source(s)." |find /v "is newer than the most recent." | find /v "You must be smarter than the average bear..."
+	cup all %opt%|find /v "is the latest version available based on your source(s)." |find /v "is newer than the most recent." | find /v "you must be smarter than the average bear..."
 	goto exitbat
 
 :installed
+	if /i "%2"=="-v" powershell.exe -file %programdata%\chocolatey\bin\coco-packages.ps1 -list %installedfind%
+	if /i "%2"=="-v" goto exitbat
 	if not "%2"=="" set installedfind=^|find /i "%2"
-	dir /b "%programdata%\chocolatey\lib"%installedfind%
-	powershell.exe -file %programdata%\chocolatey\bin\coco-packages.ps1 -list %installedfind%
+	if /i NOT "%3"=="-v" dir /b "%programdata%\chocolatey\lib"%installedfind%
+	if /i "%3"=="-v" powershell.exe -file %programdata%\chocolatey\bin\coco-packages.ps1 -list %installedfind%
 	set installedfind=
 	goto exitbat
-
-
 
 :invalid
 	echo error: invalid parameters detected.
