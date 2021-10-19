@@ -1,5 +1,5 @@
 # Cocoa
-Some usefull additions to Chocolatey: backup &amp; restore, installed, clean-up and reinstall:
+Some usefull additions to [Chocolatey](https://chocolatey.org): backup &amp; restore, installed, clean-up and reinstall:
 
 ```
 λ cocoa -h
