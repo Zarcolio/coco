@@ -1,23 +1,23 @@
 # Coco
-Some usefull additions to Choco: backup &amp; restore, installed, clean-up and reinstall:
+Some usefull additions to Chocolatey: backup &amp; restore, installed, clean-up and reinstall:
 
 ```
 λ coco -h
 
-    | ᶜᵒᶜᵒ |
-=== ( ° ͜ʖ ͡°) ============================================
-=            Watch out! Hot coco overhere!!! | ᶜᵒᶜᵒ |   =
-============================================ ( ° ͜ʖ ͡°) ===
+    | ᶜᵒᶜᵒᵃ |
+=== ( ° ͜ʖ ͡° ) ============================================
+=            Watch out! Hot coco overhere!!! | ᶜᵒᶜᵒᵃ |   =
+============================================ ( ° ͜ʖ ͡° ) ===
 
-COCO is a set of customizations to Chocolatey.
+COCOA is a set of customizations to Chocolatey.
 For suggestions, you can reach me @zarcolio on Twitter or GitHub.
 
 Usage:
 
- COCO backup [batch]            Creates a backup of installed packages to text (default) or batch file.
- COCO cleanup                   Cleans the Chocolatey environment from temp and other useless files.
- COCO installed [<package>]     Lists which packages have been installed.
- COCO reinstall <package> [-y]  Reinstall this package by uninstalling and installing this package.
- COCO restore <file>            Restore a backup from file.
- COCO setup                     Sets up Coco (installs choco-cleaner and Coco itself).
- COCO update [-y]               updates all packages but only shows updated packages. 
+ COCOA backup [batch]            Creates a backup of installed packages to text (default) or batch file.
+ COCOA cleanup                   Cleans the Chocolatey environment from temp and other useless files.
+ COCOA installed [<package>]     Lists which packages have been installed.
+ COCOA reinstall <package> [-y]  Reinstall this package by uninstalling and installing this package.
+ COCOA restore <file>            Restore a backup from file.
+ COCOA setup                     Sets up Coco (installs choco-cleaner and Coco itself).
+ COCOA update [-y]               updates all packages but only shows updated packages. 
