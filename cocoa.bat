@@ -58,7 +58,7 @@ set opt2=
 :backupbatch
 	for /f "tokens=2 delims==" %%g in ('wmic os get localdatetime /value') do set datetime=%%g
 	set dateonly=%datetime:~0,8%
-	dir /b "%programdata%\chocolatey\lib">"%userprofile%\documents\choco_pkg_%dateonly%.txt"
+	dir /b "%programdata%\chocolatey\lib">"%userprofile%\documents\choco_pkg_%dateonly%.tmp"
 	echo @echo off>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
 	echo echo Cocoa is about to reinstall the packages in %%0.>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
 	echo echo Do you want to continue? hit ctrl-c to quit.>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
@@ -66,7 +66,8 @@ set opt2=
 	echo pause>nul>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
 
 
-	for /f %%f in (choco_pkg_%dateonly%.txt) do echo choco install %%f -y>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	for /f %%f in (%userprofile%\documents\choco_pkg_%dateonly%.tmp) do echo choco install %%f -y>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	del %userprofile%\documents\choco_pkg_%dateonly%.tmp
 	if errorlevel 0 echo Backup to batch file succesful.
 	if errorlevel 0 goto exitbat
 	echo Backup not succesful.
