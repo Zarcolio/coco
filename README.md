@@ -1,12 +1,12 @@
-# Coco
+# Cocoa
 Some usefull additions to Chocolatey: backup &amp; restore, installed, clean-up and reinstall:
 
 ```
-λ coco -h
+λ cocoa -h
 
     | ᶜᵒᶜᵒᵃ |
 === ( ° ͜ʖ ͡° ) ============================================
-=            Watch out! Hot coco overhere!!! | ᶜᵒᶜᵒᵃ |   =
+=            Watch out! Hot cocoa overhere!!! | ᶜᵒᶜᵒᵃ |  =
 ============================================ ( ° ͜ʖ ͡° ) ===
 
 COCOA is a set of customizations to Chocolatey.
@@ -19,5 +19,5 @@ Usage:
  COCOA installed [<package>]     Lists which packages have been installed.
  COCOA reinstall <package> [-y]  Reinstall this package by uninstalling and installing this package.
  COCOA restore <file>            Restore a backup from file.
- COCOA setup                     Sets up Coco (installs choco-cleaner and Coco itself).
- COCOA update [-y]               updates all packages but only shows updated packages. 
+ COCOA setup                     Sets up Cocoa (installs choco-cleaner and Cocoa itself).
+ COCOA update [-y]               Updates all packages but only shows updated packages. 
