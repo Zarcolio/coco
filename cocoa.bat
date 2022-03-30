@@ -1,147 +1,174 @@
-@echo off
+@ECHO off
 chcp 65001>nul
 echo:
-echo     ^| ᶜᵒᶜᵒᵃ ^|
-echo === ( ° ͜ʖ ͡° ) ============================================
-echo =            Watch out! Hot cocoa overhere!!! ^| ᶜᵒᶜᵒᵃ ^|  =
-echo ============================================ ( ° ͜ʖ ͡°)  ===
+ECHO     ^| ????? ^|
+ECHO === ( ? ?? ?? ) ============================================
+ECHO =           watch out! hot cocoa overhere!!! ^| ????? ^|   =
+ECHO ============================================ ( ? ?? ?? ) ===
 echo:
 chcp 437>nul
 
-set opt=
-set opt2=
+SET opt=
+SET opt2=
 
 :startbat
-	if /i "%1"=="backup" 		goto backup
-	if /i "%1"=="list"	 		goto list
-	if /i "%1"=="restore" 		goto restore
-	if /i "%1"=="cleanup"		goto cleanup
-	if /i "%1"=="setup"			goto setup
-	if /i "%1"=="installed"		goto installed
-	if /i "%1"=="" 				goto help
-	if /i "%1"=="-h" 			goto help
-	if /i "%1"=="help" 			goto help
-	if /i "%1"=="-?" 			goto help
-	if /i "%3"=="-y" 			set opt=%3
-	if /i "%3"=="-y" 			set opt2=/q
-	if /i "%1"=="reinstall"		goto reinstall
-	if /i "%1"=="update"		goto update
+	IF /i "%1"=="backup" 		GOTO backup
+	IF /i "%1"=="list"	 		GOTO list
+	IF /i "%1"=="restore" 		GOTO restore
+	IF /i "%1"=="cleanup"		GOTO cleanup
+	IF /i "%1"=="setup"			GOTO setup
+	IF /i "%1"=="installed"		GOTO installed
+	IF /i "%1"=="" 				GOTO help
+	IF /i "%1"=="-h" 			GOTO help
+	IF /i "%1"=="help" 			GOTO help
+	IF /i "%1"=="-?" 			GOTO help
+	IF /i "%3"=="-y" 			SET opt=%3
+	IF /i "%3"=="-y" 			SET opt2=/q
+	IF /i "%1"=="reinstall"		GOTO reinstall
+	IF /i "%1"=="update"		GOTO update
 	rem and else:
-	goto :invalid
+	GOTO :invalid
 
 :help
-	echo cocoa is a set of customizations to chocolatey.
-	echo for suggestions, you can reach me @zarcolio on twitter or github.
+	ECHO cocoa is a SET of customizations to chocolatey.
+	ECHO FOR suggestions, you can reach me @zarcolio on twitter or github.
 	echo:
-	echo usage:
+	ECHO usage:
 	echo:
-	echo  cocoa backup [batch] 			creates a backup of installed packages to text (default) or batch file.
-	echo  cocoa cleanup				cleans the chocolatey environment from temp and other useless files.
-	echo  cocoa [help^|-h]			displays help text.
-	echo  cocoa installed [^<package^>]		lists which packages have been installed.
-	echo  cocoa list [^<package^>]			lists which packages are available and not broken (differs from "choco list").
-	echo  cocoa reinstall ^<package^> [-y]		reinstall this package by uninstalling and installing this package.
-	echo  cocoa restore ^<file^> 			restore a backup from file.
-	echo  cocoa setup				sets up cocoa (installs choco-cleaner and cocoa itself).
-	echo  cocoa update [-y]			updates all packages but only shows updated packages.
-	if %0 equ "%~dpnx0" (
+	ECHO  cocoa backup [batch] 			creates a backup of installed packages to text (default) or batch file.
+	ECHO  cocoa cleanup				cleans the chocolatey environment from temp and other useless files.
+	ECHO  cocoa [help^|-h]			displays help text.
+	ECHO  cocoa installed [^<package^>]		lists which packages have been installed.
+	ECHO  cocoa list [^<package^>]			lists which packages are available and not broken (differs from "choco list").
+	ECHO  cocoa reinstall ^<package^> [-y]		reinstall this package by uninstalling and installing this package.
+	ECHO  cocoa restore ^<file^> 			restore a backup from file.
+	ECHO  cocoa setup				sets up cocoa (installs choco-cleaner and cocoa itself).
+	ECHO  cocoa update [-y]			updates all packages but only shows updated packages. Also take in account whether Controlled Folder Access is enabled.
+	IF %0 equ "%~dpnx0" (
 		echo:
 		pause
 	)
-	goto exitbat
+	GOTO exitbat
 
 :backup
-	if "%2"=="batch" goto backupbatch
-	for /f "tokens=2 delims==" %%g in ('wmic os get localdatetime /value') do set datetime=%%g
-	set dateonly=%datetime:~0,8%
+	IF "%2"=="batch" GOTO backupbatch
+	FOR /f "tokens=2 delims==" %%g in ('wmic os get localdatetime /value') do SET datetime=%%g
+	SET dateonly=%datetime:~0,8%
 	dir /b "%programdata%\chocolatey\lib">"%userprofile%\documents\choco_pkg_%dateonly%.txt"
-	if errorlevel 0 (
-		echo backup to text file succesful.
-		goto exitbat
+	IF errorlevel 0 (
+		ECHO backup to text file succesful.
+		GOTO exitbat
 	)
-	echo backup not succesful.
+	ECHO backup not succesful.
 
 :backupbatch
-	for /f "tokens=2 delims==" %%g in ('wmic os get localdatetime /value') do set datetime=%%g
-	set dateonly=%datetime:~0,8%
+	FOR /f "tokens=2 delims==" %%g in ('wmic os get localdatetime /value') do SET datetime=%%g
+	SET dateonly=%datetime:~0,8%
 	dir /b "%programdata%\chocolatey\lib">"%userprofile%\documents\choco_pkg_%dateonly%.tmp"
-	echo @echo off>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
-	echo echo cocoa is about to reinstall the packages in %%0.>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
-	echo echo do you want to continue? hit ctrl-c to quit.>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
-	echo echo.>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
-	echo pause>nul>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	ECHO @ECHO off>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	ECHO ECHO cocoa is about to reinstall the packages in %%0.>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	ECHO ECHO do you want to continue? hit ctrl-c to quit.>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	ECHO echo.>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	ECHO pause>nul>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
 
 
-	for /f %%f in (%userprofile%\documents\choco_pkg_%dateonly%.tmp) do echo choco install %%f -y>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
-	del %userprofile%\documents\choco_pkg_%dateonly%.tmp
-	if errorlevel 0 (
-		echo backup to batch file succesful.
-		goto exitbat
+	FOR /f %%f in (%userprofile%\documents\choco_pkg_%dateonly%.tmp) do ECHO choco install %%f -y>>"%userprofile%\documents\choco_pkg_%dateonly%.bat"
+	DEL %userprofile%\documents\choco_pkg_%dateonly%.tmp
+	IF errorlevel 0 (
+		ECHO backup to batch file succesful.
+		GOTO exitbat
 	)
-	echo backup not succesful.
+	ECHO backup not succesful.
 
 :restore
-	if "%2"=="" echo error: file name is needed.
-	if "%2"=="" echo:
-	if "%2"=="" goto help
-	if not exist "%2" (
-		echo file not found.
-		goto exitbat
+	IF "%2"=="" (
+		ECHO error: file name is needed.
+		echo:
+		GOTO help
+	)
+	IF not exist "%2" (
+		ECHO file not found.
+		GOTO exitbat
 	)
 	
-	echo cocoa is about to reinstall the packages in "%2".
-	echo do you want to continue? hit ctrl-c to quit.
+	ECHO cocoa is about to reinstall the packages in "%2".
+	ECHO do you want to continue? hit ctrl-c to quit.
 	pause>nul
-	for /f "tokens=* delims=" %%x in (%2) do choco install -y %%x
-	goto exitbat
+	FOR /f "tokens=* delims=" %%x in (%2) do choco install -y %%x
+	GOTO exitbat
 
 :cleanup
 	call choco-cleaner.bat
 	powershell.exe -file %programdata%\chocolatey\bin\cocoa-packages.ps1 -cleanup
-	goto exitbat
+	GOTO exitbat
 
 :setup
 	choco install choco-cleaner -y
 	powershell.exe -command invoke-webrequest https://raw.githubusercontent.com/zarcolio/cocoa/master/cocoa-packages.ps1 -o %programdata%\chocolatey\bin\cocoa-packages.ps1
 	copy "%~dpxn0" "%programdata%\chocolatey\bin"
-	if %errorlevel% neq 0 exit /b 255
-	goto exitbat
+	IF %errorlevel% neq 0 exit /b 255
+	GOTO exitbat
 
 :reinstall
-	if "%2"=="" (
-		echo error: package name is needed.
+	IF "%2"=="" (
+		ECHO error: package name is needed.
 		echo:
-		goto help
+		GOTO help
 	)
 	choco uninstall %2 %opt%
-	del %opt2% %programdata%\chocolatey\lib\%2\
+	DEL %opt2% %programdata%\chocolatey\lib\%2\
 	choco install %2 %opt%
-	goto exitbat
+	GOTO exitbat
 
 :update
+	REG query "HKLM\SOFTWARE\Microsoft\Windows Defender\Windows Defender Exploit Guard\Controlled Folder Access" /v EnableControlledFolderAccess|find "0x1">NUL
+	IF %errorlevel%==0 SET /p "DisableCFA=Controlled Folder Access (anti-ransomware) detected, temporarily disable [d], continue without disabling or [c]exit [e] ? "
+	IF %errorlevel%==1 GOTO ExecuteCUP
+	IF /i "%DisableCFA%"=="d" (
+		powershell Set-MpPreference -EnableControlledFolderAccess Disabled
+		ECHO Controlled Folder Access has been temporarily disabled...
+		ECHO:
+		SET CFA=disabled
+		GOTO ExecuteCUP
+	)
+	IF /i "%DisableCFA%"=="e" GOTO ExitBat
+	IF /i "%DisableCFA%"=="c" GOTO ExecuteCUP
+	GOTO update
+:ExecuteCUP
 	cup all %opt%|find /v "is the latest version available based on your source(s)." |find /v "is newer than the most recent." | find /v "you must be smarter than the average bear..."
-	goto exitbat
+	IF "%CFA%"=="disabled" (
+		powershell Set-MpPreference -EnableControlledFolderAccess Enabled
+		SET CFA=
+		ECHO:
+		ECHO Controlled Folder Access has been re-enabled...
+		ECHO:
+	)
+	GOTO exitbat
 
 :installed
-	if /i "%2"=="-v" (
+	IF /i "%2"=="-v" (
 		powershell.exe -file %programdata%\chocolatey\bin\cocoa-packages.ps1 -list %installedfind%
-		goto exitbat
+		GOTO exitbat
 	)
-	if not "%2"=="" set installedfind=^|find /i "%2"
-	if /i not "%3"=="-v" dir /b "%programdata%\chocolatey\lib"%installedfind%
-	if /i "%3"=="-v" powershell.exe -file %programdata%\chocolatey\bin\cocoa-packages.ps1 -list %installedfind%
-	set installedfind=
-	goto exitbat
+	IF not "%2"=="" SET installedfind=^|find /i "%2"
+	IF /i not "%3"=="-v" dir /b "%programdata%\chocolatey\lib"%installedfind%
+	IF /i "%3"=="-v" powershell.exe -file %programdata%\chocolatey\bin\cocoa-packages.ps1 -list %installedfind%
+	SET installedfind=
+	GOTO exitbat
 
 :list
-	if not "%2"=="" (
-		choco list %2|sort|find /v /i "broken"
-		goto exitbat
+	IF not "%2"=="" (
+		choco list %2|find /v /i "broken"|find /v /i "packages found."
+		GOTO exitbat
 	)
 
 :invalid
-	echo error: invalid parameters detected.
+	ECHO error: invalid parameters detected.
 	echo:
-	goto help	
+	GOTO help	
 
 :exitbat
+
+
+
+
